@@ -1,10 +1,12 @@
 var minimist = require('minimist');
 
+var today_date = new Date()
+
 var argv = minimist(process.argv.slice(2), {
 	string: ['output'],
 	default: {
-		m: 4,
-		y: 2000,
+		m: today_date.getMonth(),
+		y: today_date.getFullYear(),
 	}
 });
 
