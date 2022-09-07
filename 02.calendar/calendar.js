@@ -17,10 +17,7 @@ let date_of_day = DateTime.fromObject({
 });
 
 let last_day = date_of_day.daysInMonth;
-
-let first_day_of_week = date_of_day.day;
-
-console.log(first_day_of_week)
+let first_day_of_week = date_of_day.weekday;
 
 console.log ('    ',argv.m,'月',argv.y,'年')
 console.log ( ' 日 月 火 水 木 金 土')
