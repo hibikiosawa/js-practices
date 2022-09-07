@@ -1,44 +1,43 @@
-var minimist = require('minimist');
-var { DateTime } = require('luxon');
+const minimist = require('minimist')
+const { DateTime } = require('luxon')
 
-var date = DateTime.local();
+const date = DateTime.local()
 
-var argv = minimist(process.argv.slice(2), {
+const argv = minimist(process.argv.slice(2), {
   string: ['output'],
   default: {
     m: date.month,
     y: date.year
   }
-});
+})
 
-let inputDate = DateTime.fromObject({
-    year: argv.y,
-    month: argv.m
-});
+const inputDate = DateTime.fromObject({
+  year: argv.y,
+  month: argv.m
+})
 
-let lastDay = inputDate.daysInMonth;
-let firstWeekday = inputDate.weekday;
+const lastDay = inputDate.daysInMonth
+const firstWeekday = inputDate.weekday
 
-console.log ('    ',argv.m,'月',argv.y,'年')
-console.log ( ' 日 月 火 水 木 金 土')
+console.log('    ', argv.m, '月', argv.y, '年')
+console.log(' 日 月 火 水 木 金 土')
 
-var tempWeekday = firstWeekday;
+let tempWeekday = firstWeekday
 
-while (tempWeekday > 0){
-  process.stdout.write(''.padStart(3," "))
+while (tempWeekday > 0) {
+  process.stdout.write(''.padStart(3, ' '))
   tempWeekday -= 1
 }
 
-var count = 1;
-count += firstWeekday;
+let count = 1
+count += firstWeekday
 
-while (count <= lastDay + firstWeekday){
-  process.stdout.write(String(count - firstWeekday).padStart(3," "))
-  if (count % 7 == 0){
+while (count <= lastDay + firstWeekday) {
+  process.stdout.write(String(count - firstWeekday).padStart(3, ' '))
+  if (count % 7 === 0) {
     console.log('\n')
   }
   count += 1
 }
 
-console.log("\n")
-  
+console.log('\n')
