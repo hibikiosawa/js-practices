@@ -2,26 +2,20 @@ var minimist = require('minimist');
 
 var argv = minimist(process.argv.slice(2), {
 	string: ['output'],
-	boolean: [
-		'month',
-		'year',
-	],
-	alias: {
-		m: 'month',
-		y: 'year',
-	},
 	default: {
-		month: 4,
-		year: 2000,
+		m: 4,
+		y: 2000,
 	}
 });
 
-let date_of_day = new Date(argv.year,argv.month,0) 
+console.log(argv)
+
+let date_of_day = new Date(argv.y,argv.m,0) 
 
 let last_day = date_of_day.getDate();
 let first_day_of_week = date_of_day.getDay();
 
-console.log (argv.month,'月',argv.year,'年')
+console.log (argv.m,'月',argv.y,'年')
 console.log ( ' 日 月 火 水 木 金 土')
 
 const beginning_of_month = first_day_of_week;
