@@ -6,10 +6,15 @@
     </head>
     <body>
         <script>
-        async function getData(url = '') {
-          const data = await fetch(url);
+        async function getData() {
+          const url = ('https://bootcamp.fjord.jp');
+          const response = await fetch(url);
+          const pageDate = await response.text();
+          return pageDate;
         }
-        getData('https://bootcamp.fjord.jp/')
+        getData().then(pageDate => {
+            console.log(pageDate)  
+        })
         </script>
     </body>
 </html>
