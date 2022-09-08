@@ -23,11 +23,12 @@ console.log('    ', argv.m, '月', argv.y, '年')
 console.log(' 日 月 火 水 木 金 土')
 
 let tempWeekday = firstWeekday
-if (!tempWeekday === 7) {
-  while (tempWeekday > 0) {
-    process.stdout.write(''.padStart(3, ' '))
-    tempWeekday -= 1
-  }
+
+if (tempWeekday === 7)[tempWeekday = 0]
+
+while (tempWeekday > 0) {
+  process.stdout.write(''.padStart(3, ' '))
+  tempWeekday -= 1
 }
 
 let count = 1
