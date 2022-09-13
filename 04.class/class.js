@@ -12,14 +12,19 @@ class Memo {
 
     process.stdin.on('end', function() {
       const lines = input_string.split("\n");
-      lines.forEach(i => console.log(i));
+       lines.forEach(i => console.log(i));
+
+       fs.writeFile(`${lines[0]}.txt`, lines[0], (err, data) => {
+        if(err) console.log(err);
+        else console.log('保存しました');
+      });
     });
-    
-    fs.writeFile('out.txt', lines, (err, data) => {
-      if(err) console.log(err);
-      else console.log('保存しました');
-    });
+
+
+
   }
+
+
 }
 
 const memo = new Memo
