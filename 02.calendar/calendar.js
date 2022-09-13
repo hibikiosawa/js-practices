@@ -22,9 +22,7 @@ const firstWeekday = inputDate.weekday
 console.log('    ', argv.m, '月', argv.y, '年')
 console.log(' 日 月 火 水 木 金 土')
 
-let tempWeekday = firstWeekday
-
-if (tempWeekday === 7)[tempWeekday = 0]
+let tempWeekday = firstWeekday === 7 ? tempWeekday = 0 : firstWeekday
 
 while (tempWeekday > 0) {
   process.stdout.write(''.padStart(3, ' '))
