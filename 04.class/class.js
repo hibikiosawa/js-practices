@@ -24,7 +24,17 @@ class Memo {
   }
 
   listMemo() {
-    
+    var fs = require('fs');
+    fs.readdir('.', function(err, files){
+      if (err) throw err;
+      var fileList = files.filter(function(file){
+        return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
+      })
+      fileList.forEach(function(index){
+        const text = fs.readFileSync(index,'utf8')
+        console.log(text)
+      });
+    });
   }
 
   referenceMemo() {
@@ -42,7 +52,7 @@ class Memo {
 const memo = new Memo
 
 if (argv.l) {
-  memo.outputMemo()
+  memo.listMemo()
 } else if (argv.r) {
   memo.referenceMemo()
 } else if (argv.d) {
