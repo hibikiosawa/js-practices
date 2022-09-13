@@ -19,8 +19,10 @@ const inputDate = DateTime.fromObject({
 const lastDay = inputDate.daysInMonth
 const firstWeekday = inputDate.weekday
 
+const weekday = '日 月 火 水 木 金 土'
+
 console.log('    ', argv.m, '月', argv.y, '年')
-console.log(' 日 月 火 水 木 金 土')
+console.log(weekday.padStart(14,' '))
 
 tempWeekday = firstWeekday === 7 ? tempWeekday = 0 : firstWeekday
 
