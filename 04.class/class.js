@@ -1,7 +1,9 @@
-var fs = require("fs");
+const argv = require('minimist')(process.argv.slice(2))
+const fs = require("fs");
+
 
 class Memo {
-  createMemo () {
+  inputMemo () {
     process.stdin.resume();
     process.stdin.setEncoding('utf8');
     var input_string = '';
@@ -19,8 +21,18 @@ class Memo {
         else console.log('保存しました');
       });
     });
+  }
+
+  listMemo() {
+    
+  }
+
+  referenceMemo() {
 
 
+  }
+
+  deleteMemo(){
 
   }
 
@@ -28,4 +40,13 @@ class Memo {
 }
 
 const memo = new Memo
-memo.createMemo()
+
+if (argv.l) {
+  memo.outputMemo()
+} else if (argv.r) {
+  memo.referenceMemo()
+} else if (argv.d) {
+  memo.deleteMemo()
+} else {
+  memo.inputMemo()
+}
