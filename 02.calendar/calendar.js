@@ -21,7 +21,7 @@ const firstWeekday = inputDate.weekday
 
 const weekday = '日 月 火 水 木 金 土'
 
-console.log('    ', argv.m, '月', argv.y, '年')
+console.log(`      ${argv.m}月${argv.y}年`)
 console.log(weekday.padStart(14,' '))
 
 tempWeekday = firstWeekday === 7 ? tempWeekday = 0 : firstWeekday
