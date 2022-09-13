@@ -29,8 +29,7 @@ while (tempWeekday > 0) {
   tempWeekday -= 1
 }
 
-let count = 1
-count += firstWeekday
+let count = 1 + firstWeekday 
 
 while (count <= lastDay + firstWeekday) {
   process.stdout.write(String(count - firstWeekday).padStart(3, ' '))
