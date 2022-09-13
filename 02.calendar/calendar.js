@@ -42,4 +42,4 @@ while (count <= lastDay + firstWeekday) {
   count += 1
 }
 
-console.log('\n')
+process.stdout.write('\n')
