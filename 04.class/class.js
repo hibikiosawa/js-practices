@@ -1,12 +1,13 @@
 const argv = require('minimist')(process.argv.slice(2))
 const fs = require("fs");
+const inquirer = require('inquirer');
 
 
 class Memo {
   inputMemo () {
     process.stdin.resume();
     process.stdin.setEncoding('utf8');
-    var input_string = '';
+    const input_string = '';
 
     process.stdin.on('data', function(chunk) {
       input_string += chunk;
@@ -24,35 +25,39 @@ class Memo {
   }
 
   listMemo() {
-    var fs = require('fs');
+    const fs = require('fs');
     fs.readdir('.', function(err, files){
       if (err) throw err;
-      var fileList = files.filter(function(file){
+      const fileList = files.filter(function(file){
         return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
       })
       fileList.forEach(function(index){
-        var text = fs.readFileSync(index, 'utf8');
-        var lines = text.toString().split('\r\n');
+        const text = fs.readFileSync(index, 'utf8');
+        const lines = text.toString().split('\r\n');
         console.log(lines[0]);
       });
     });
   }
 
   referenceMemo() {
-    var fs = require('fs');
+    const fs = require('fs');
     fs.readdir('.', function(err, files){
       if (err) throw err;
-      var fileList = files.filter(function(file){
+      const fileList = files.filter(function(file){
         return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
       })
-      fileList.forEach(function(index){
-        var text = fs.readFileSync(index, 'utf8');
-        var lines = text.toString().split('\r\n');
-        
-        for (var idx = 0; idx < lines.length; idx++) {
-            console.log(lines[idx]);
+
+      const answer = inquirer.prompt([
+        {
+          type: 'list',
+          name: 'title',
+          choices: fileList
         }
-      });
+      ])
+      .then(answer => {
+        const text = fs.readFileSync(answer.title, 'utf8');
+        console.log(text)
+      })
     });
   }
 
