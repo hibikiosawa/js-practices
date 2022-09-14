@@ -7,7 +7,7 @@ class Memo {
   inputMemo () {
     process.stdin.resume();
     process.stdin.setEncoding('utf8');
-    const input_string = '';
+    let input_string = '';
 
     process.stdin.on('data', function(chunk) {
       input_string += chunk;
@@ -15,9 +15,8 @@ class Memo {
 
     process.stdin.on('end', function() {
       const lines = input_string.split("\n");
-       lines.forEach(i => console.log(i));
 
-       fs.writeFile(`${lines[0]}.txt`, lines[0], (err, data) => {
+       fs.writeFile(`${lines[0]}.txt`, input_string, (err, data) => {
         if(err) console.log(err);
         else console.log('保存しました');
       });
@@ -81,7 +80,7 @@ class Memo {
       .then(answer => {
         fs.unlink(answer.title,(err) => {
             if (err) throw err;
-            console.log('削除しました。')
+            console.log('削除しました')
         })
     })
     });
