@@ -31,15 +31,29 @@ class Memo {
         return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
       })
       fileList.forEach(function(index){
-        const text = fs.readFileSync(index,'utf8')
-        console.log(text)
+        var text = fs.readFileSync(index, 'utf8');
+        var lines = text.toString().split('\r\n');
+        console.log(lines[0]);
       });
     });
   }
 
   referenceMemo() {
-
-
+    var fs = require('fs');
+    fs.readdir('.', function(err, files){
+      if (err) throw err;
+      var fileList = files.filter(function(file){
+        return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
+      })
+      fileList.forEach(function(index){
+        var text = fs.readFileSync(index, 'utf8');
+        var lines = text.toString().split('\r\n');
+        
+        for (var idx = 0; idx < lines.length; idx++) {
+            console.log(lines[idx]);
+        }
+      });
+    });
   }
 
   deleteMemo(){
