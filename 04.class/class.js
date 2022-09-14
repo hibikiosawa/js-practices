@@ -24,6 +24,8 @@ class Memo {
     });
   }
 
+
+
   listMemo() {
     const fs = require('fs');
     fs.readdir('.', function(err, files){
@@ -62,7 +64,27 @@ class Memo {
   }
 
   deleteMemo(){
+    const fs = require('fs');
+    fs.readdir('.', function(err, files){
+      if (err) throw err;
+      const fileList = files.filter(function(file){
+        return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
+      })
 
+      const answer = inquirer.prompt([
+        {
+          type: 'list',
+          name: 'title',
+          choices: fileList
+        }
+      ])
+      .then(answer => {
+        fs.unlink(answer.title,(err) => {
+            if (err) throw err;
+            console.log('削除しました。')
+        })
+    })
+    });
   }
 
 
