@@ -1,6 +1,7 @@
 const argv = require('minimist')(process.argv.slice(2))
 const fs = require("fs");
 const inquirer = require('inquirer');
+const { TextDecoder } = require('util');
 
 
 class Memo {
@@ -23,53 +24,52 @@ class Memo {
     });
   }
 
-
-
-  listMemo() {
-    const fs = require('fs');
-    fs.readdir('.', function(err, files){
-      if (err) throw err;
-      const fileList = files.filter(function(file){
-        return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
-      })
-      fileList.forEach(function(index){
-        const text = fs.readFileSync(index, 'utf8');
-        const lines = text.toString().split('\r\n');
-        console.log(lines[0]);
-      });
-    });
+  readFiles(files){
+        const fileList = files.filter(function(file){
+          return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
+        })
+      return fileList
   }
 
-  referenceMemo() {
-    const fs = require('fs');
+  listMemo() {
     fs.readdir('.', function(err, files){
       if (err) throw err;
-      const fileList = files.filter(function(file){
-        return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
-      })
+      let fileList = memo.readFiles(files);
+      fileList.forEach(function(index){
+        const text = fs.readFileSync(index, 'utf8');
+        const lines = text.match(/^.*$/m);
+        console.log(lines[0]);
+      });
+  })
+}
 
-      const answer = inquirer.prompt([
-        {
-          type: 'list',
-          name: 'title',
-          choices: fileList
-        }
-      ])
-      .then(answer => {
-        const text = fs.readFileSync(answer.title, 'utf8');
-        console.log(text)
+  referenceMemo() {
+    fs.readdir('.', function(err, files){
+      if (err) throw err;
+      let fileList = memo.readFiles(files);
+      let files_sliced = []
+      files_sliced = fileList.forEach(function(index){
+        files_sliced.push(index.slice(0,-4));
+        const answer = inquirer.prompt([
+            {
+              message: 'ファイル詳細',
+              type: 'list',
+              name: 'title',
+              choices: files_sliced
+            }
+          ])
+          .then(answer => {
+            const text = fs.readFileSync(`${answer.title}.txt`, 'utf8');
+            console.log(text)
+          })
       })
     });
   }
 
   deleteMemo(){
-    const fs = require('fs');
     fs.readdir('.', function(err, files){
       if (err) throw err;
-      const fileList = files.filter(function(file){
-        return fs.statSync(file).isFile() && /.*\.txt$/.test(file); //絞り込み
-      })
-
+      let fileList = memo.readFiles(files);
       const answer = inquirer.prompt([
         {
           type: 'list',
@@ -85,7 +85,6 @@ class Memo {
     })
     });
   }
-
 
 }
 
