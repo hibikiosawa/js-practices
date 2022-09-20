@@ -1,6 +1,7 @@
 const argv = require('minimist')(process.argv.slice(2))
 const fs = require("fs");
 const inquirer = require('inquirer');
+const readline = require('readline')
 const { TextDecoder } = require('util');
 
 
@@ -37,8 +38,8 @@ class Memo {
       let fileList = memo.readFiles(files);
       fileList.forEach(function(index){
         const text = fs.readFileSync(index, 'utf8');
-        const lines = text.match(/^.*$/m);
-        console.log(lines[0]);
+          const lines = text.match(/^.*$/m);
+          console.log(lines[0]);
       });
   })
 }
@@ -47,15 +48,21 @@ class Memo {
     fs.readdir('.', function(err, files){
       if (err) throw err;
       let fileList = memo.readFiles(files);
-      let files_sliced = []
-      files_sliced = fileList.forEach(function(index){
-        files_sliced.push(index.slice(0,-4));
+      const fileText = []
+      fileList.forEach(function(index){
+        const text = fs.readFileSync(index, "utf8",function(err,result){
+            if(err) throw err;
+            console.log(data);
+        })
+        const textSplited = text.split(/\r\n|\n/);
+        fileText.push(textSplited[0])
+      })
         const answer = inquirer.prompt([
             {
               message: 'ファイル詳細',
               type: 'list',
               name: 'title',
-              choices: files_sliced
+              choices: fileText
             }
           ])
           .then(answer => {
@@ -63,22 +70,30 @@ class Memo {
             console.log(text)
           })
       })
-    });
   }
 
   deleteMemo(){
     fs.readdir('.', function(err, files){
       if (err) throw err;
       let fileList = memo.readFiles(files);
+      const fileText = []
+      fileList.forEach(function(index){
+        const text = fs.readFileSync(index, "utf8",function(err,result){
+            if(err) throw err;
+            console.log(data);
+        })
+        const textSplited = text.split(/\r\n|\n/);
+        fileText.push(textSplited[0])
+      })
       const answer = inquirer.prompt([
         {
           type: 'list',
           name: 'title',
-          choices: fileList
+          choices: fileText
         }
       ])
       .then(answer => {
-        fs.unlink(answer.title,(err) => {
+        fs.unlink(`${answer.title}.txt`,(err) => {
             if (err) throw err;
             console.log('削除しました')
         })
