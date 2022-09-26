@@ -2,8 +2,8 @@ const argv = require('minimist')(process.argv.slice(2))
 const fs = require('fs')
 const inquirer = require('inquirer')
 
-class Memo {
-  inputMemo () {
+class MemoApp {
+  input () {
     process.stdin.resume()
     process.stdin.setEncoding('utf8')
     let inputString = ''
@@ -28,10 +28,10 @@ class Memo {
     })
   }
 
-  listMemo () {
+  list () {
     fs.readdir('.', function (err, files) {
       if (err) throw err
-      const files = this.readFiles(files)
+      const fileList = this.readFiles(files)
       fileList.forEach(function (index) {
         const text = fs.readFileSync(index, 'utf8')
         const lines = text.match(/^.*$/m)
@@ -40,7 +40,7 @@ class Memo {
     })
   }
 
-  referenceMemo () {
+  reference () {
     fs.readdir('.', function (err, files) {
       if (err) throw err
       const fileList = this.readFiles(files)
@@ -67,7 +67,7 @@ class Memo {
     })
   }
 
-  deleteMemo () {
+  delete () {
     fs.readdir('.', function (err, files) {
       if (err) throw err
       const fileList = this.readFiles(files)
@@ -96,14 +96,14 @@ class Memo {
   }
 }
 
-const memo = new Memo()
+const memoApp = new MemoApp()
 
 if (argv.l) {
-  memo.listMemo()
+  memoApp.list()
 } else if (argv.r) {
-  memo.referenceMemo()
+  memoApp.referenceMemo()
 } else if (argv.d) {
-  memo.deleteMemo()
+  memoApp.delete()
 } else {
-  memo.inputMemo()
+  memoApp.input()
 }
