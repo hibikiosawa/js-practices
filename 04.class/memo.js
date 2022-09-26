@@ -23,15 +23,16 @@ class MemoApp {
   }
 
   readFiles (files) {
-    return files.filter(function (file) {
-      return fs.statSync(file).isFile() && /.*\.txt$/.test(file)
+    const fileList = files.filter(function (file) {
+      return fs.statSync(file).isFile() && file.endsWith('.txt')
     })
+    return fileList
   }
 
   list () {
     fs.readdir('.', function (err, files) {
       if (err) throw err
-      const fileList = this.readFiles(files)
+      const fileList = memoApp.readFiles(files)
       fileList.forEach(function (index) {
         const text = fs.readFileSync(index, 'utf8')
         const lines = text.match(/^.*$/m)
@@ -43,7 +44,7 @@ class MemoApp {
   reference () {
     fs.readdir('.', function (err, files) {
       if (err) throw err
-      const fileList = this.readFiles(files)
+      const fileList = memoApp.readFiles(files)
       const fileText = []
       fileList.forEach(function (index) {
         const text = fs.readFileSync(index, 'utf8', function (err, result) {
@@ -68,21 +69,19 @@ class MemoApp {
   }
 
   delete () {
-    fs.readdir('.', function (err, files) {
+    fs.readdir('.', function (err,files) {
       if (err) throw err
-      const fileList = this.readFiles(files)
+      const fileList = memoApp.readFiles(files)
       const fileText = []
       fileList.forEach(function (index) {
-        const text = fs.readFileSync(index, 'utf8', function (err, result) {
-          if (err) throw err
-        })
+        const text = fs.readFileSync(index, 'utf8')
         const textSplited = text.split(/\r\n|\n/)
         fileText.push(textSplited[0])
       })
       inquirer.prompt([
         {
           type: 'list',
-          name: 'title',
+          name: 'ファイル削除',
           choices: fileText
         }
       ])
@@ -101,7 +100,7 @@ const memoApp = new MemoApp()
 if (argv.l) {
   memoApp.list()
 } else if (argv.r) {
-  memoApp.referenceMemo()
+  memoApp.reference()
 } else if (argv.d) {
   memoApp.delete()
 } else {
