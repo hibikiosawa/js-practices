@@ -23,16 +23,15 @@ class Memo {
   }
 
   readFiles (files) {
-    const fileList = files.filter(function (file) {
+    return files.filter(function (file) {
       return fs.statSync(file).isFile() && /.*\.txt$/.test(file)
     })
-    return fileList
   }
 
   listMemo () {
     fs.readdir('.', function (err, files) {
       if (err) throw err
-      const fileList = memo.readFiles(files)
+      const files = this.readFiles(files)
       fileList.forEach(function (index) {
         const text = fs.readFileSync(index, 'utf8')
         const lines = text.match(/^.*$/m)
@@ -44,7 +43,7 @@ class Memo {
   referenceMemo () {
     fs.readdir('.', function (err, files) {
       if (err) throw err
-      const fileList = memo.readFiles(files)
+      const fileList = this.readFiles(files)
       const fileText = []
       fileList.forEach(function (index) {
         const text = fs.readFileSync(index, 'utf8', function (err, result) {
@@ -71,7 +70,7 @@ class Memo {
   deleteMemo () {
     fs.readdir('.', function (err, files) {
       if (err) throw err
-      const fileList = memo.readFiles(files)
+      const fileList = this.readFiles(files)
       const fileText = []
       fileList.forEach(function (index) {
         const text = fs.readFileSync(index, 'utf8', function (err, result) {
