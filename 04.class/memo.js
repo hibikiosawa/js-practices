@@ -15,7 +15,7 @@ class Memo {
     process.stdin.on('end', function () {
       const lines = inputString.split('\n')
 
-      fs.writeFile(`${lines[0]}.txt`, inputString, (err, data) => {
+      fs.writeFile(`${lines[0]}.txt`, inputString, (err) => {
         if (err) console.log(err)
         else console.log('保存しました')
       })
@@ -24,7 +24,7 @@ class Memo {
 
   readFiles (files) {
     const fileList = files.filter(function (file) {
-      return fs.statSync(file).isFile() && /.*\.txt$/.test(file) // 絞り込み
+      return fs.statSync(file).isFile() && /.*\.txt$/.test(file)
     })
     return fileList
   }
