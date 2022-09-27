@@ -22,7 +22,7 @@ class MemoApp {
     })
   }
 
-  readFiles (files) {
+  filetypeConvert (files) {
     return files.filter(function (file) {
       return fs.statSync(file).isFile() && file.endsWith('.txt')
     })
@@ -31,7 +31,7 @@ class MemoApp {
   list () {
     fs.readdir('.', function (err, allFiles) {
       if (err) throw err
-      const files = memoApp.readFiles(allFiles)
+      const files = memoApp.filetypeConvert(allFiles)
       files.forEach(function (file) {
         const text = fs.readFileSync(file, 'utf8')
         const lines = text.split(/\r\n|\n/)
@@ -40,16 +40,21 @@ class MemoApp {
     })
   }
 
+  linesConvert(allFiles) {
+    const files = memoApp.filetypeConvert(allFiles)
+    const text = []
+    files.forEach(function (file) {
+      const texts = fs.readFileSync(file, 'utf8')
+      const lines = texts.split(/\r\n|\n/)
+      text.push(lines[0])
+    })
+    return text
+}
+
   reference () {
     fs.readdir('.', function (err,allFiles) {
       if (err) throw err
-      const files = memoApp.readFiles(allFiles)
-      const text = []
-      files.forEach(function (file) {
-        const texts = fs.readFileSync(file, 'utf8')
-        const lines = texts.split(/\r\n|\n/)
-        text.push(lines[0])
-      })
+      const text = memoApp.linesConvert(allFiles)
       inquirer.prompt([
         {
           message: 'ファイル詳細',
@@ -68,13 +73,7 @@ class MemoApp {
   delete () {
     fs.readdir('.', function (err,allFiles) {
       if (err) throw err
-      const files = memoApp.readFiles(allFiles)
-      const text = []
-      files.forEach(function (file) {
-        const texts = fs.readFileSync(file, 'utf8')
-        const lines = texts.split(/\r\n|\n/)
-        text.push(lines[0])
-      })
+      const text = memoApp.linesConvert(allFiles)
       inquirer.prompt([
         {
           type: 'list',
@@ -88,7 +87,7 @@ class MemoApp {
           console.log('削除しました')
           })
         })
-    })
+      })
   }
 }
 
