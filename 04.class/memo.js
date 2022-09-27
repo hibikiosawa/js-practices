@@ -13,9 +13,9 @@ class MemoApp {
     })
 
     process.stdin.on('end', function () {
-      const lines = inputString.split('\n')
+      const today = new Date
 
-      fs.writeFile(`${lines[0]}.txt`, inputString, (err) => {
+      fs.writeFile(`${today}.txt`, inputString, (err) => {
         if (err) console.log(err)
         else console.log('保存しました')
       })
