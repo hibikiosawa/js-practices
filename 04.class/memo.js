@@ -23,10 +23,9 @@ class MemoApp {
   }
 
   readFiles (files) {
-    const fileList = files.filter(function (file) {
+    return files.filter(function (file) {
       return fs.statSync(file).isFile() && file.endsWith('.txt')
     })
-    return fileList
   }
 
   list () {
@@ -35,7 +34,7 @@ class MemoApp {
       const fileList = memoApp.readFiles(files)
       fileList.forEach(function (index) {
         const text = fs.readFileSync(index, 'utf8')
-        const lines = text.match(/^.*$/m)
+        const lines = text.split(/\r\n|\n/)
         console.log(lines[0])
       })
     })
@@ -50,8 +49,8 @@ class MemoApp {
         const text = fs.readFileSync(index, 'utf8', function (err, result) {
           if (err) throw err
         })
-        const textSplited = text.split(/\r\n|\n/)
-        fileText.push(textSplited[0])
+        const lines = text.split(/\r\n|\n/)
+        fileText.push(lines[0])
       })
       inquirer.prompt([
         {
@@ -75,8 +74,8 @@ class MemoApp {
       const fileText = []
       fileList.forEach(function (index) {
         const text = fs.readFileSync(index, 'utf8')
-        const textSplited = text.split(/\r\n|\n/)
-        fileText.push(textSplited[0])
+        const lines = text.split(/\r\n|\n/)
+        fileText.push(lines[0])
       })
       inquirer.prompt([
         {
