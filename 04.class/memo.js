@@ -29,11 +29,11 @@ class MemoApp {
   }
 
   list () {
-    fs.readdir('.', function (err, files) {
+    fs.readdir('.', function (err, allFiles) {
       if (err) throw err
-      const fileList = memoApp.readFiles(files)
-      fileList.forEach(function (index) {
-        const text = fs.readFileSync(index, 'utf8')
+      const files = memoApp.readFiles(allFiles)
+      files.forEach(function (file) {
+        const text = fs.readFileSync(file, 'utf8')
         const lines = text.split(/\r\n|\n/)
         console.log(lines[0])
       })
@@ -41,23 +41,21 @@ class MemoApp {
   }
 
   reference () {
-    fs.readdir('.', function (err, files) {
+    fs.readdir('.', function (err,allFiles) {
       if (err) throw err
-      const fileList = memoApp.readFiles(files)
-      const fileText = []
-      fileList.forEach(function (index) {
-        const text = fs.readFileSync(index, 'utf8', function (err, result) {
-          if (err) throw err
-        })
-        const lines = text.split(/\r\n|\n/)
-        fileText.push(lines[0])
+      const files = memoApp.readFiles(allFiles)
+      const text = []
+      files.forEach(function (file) {
+        const texts = fs.readFileSync(file, 'utf8')
+        const lines = texts.split(/\r\n|\n/)
+        text.push(lines[0])
       })
       inquirer.prompt([
         {
           message: 'ファイル詳細',
           type: 'list',
           name: 'title',
-          choices: fileText
+          choices: text
         }
       ])
         .then(answer => {
@@ -68,26 +66,26 @@ class MemoApp {
   }
 
   delete () {
-    fs.readdir('.', function (err,files) {
+    fs.readdir('.', function (err,allFiles) {
       if (err) throw err
-      const fileList = memoApp.readFiles(files)
-      const fileText = []
-      fileList.forEach(function (index) {
-        const text = fs.readFileSync(index, 'utf8')
-        const lines = text.split(/\r\n|\n/)
-        fileText.push(lines[0])
+      const files = memoApp.readFiles(allFiles)
+      const text = []
+      files.forEach(function (file) {
+        const texts = fs.readFileSync(file, 'utf8')
+        const lines = texts.split(/\r\n|\n/)
+        text.push(lines[0])
       })
       inquirer.prompt([
         {
           type: 'list',
           name: 'ファイル削除',
-          choices: fileText
+          choices: text
         }
       ])
-        .then(answer => {
-          fs.unlink(`${answer.title}.txt`, (err) => {
-            if (err) throw err
-            console.log('削除しました')
+      .then(answer => {
+        fs.unlink(`${answer.title}.txt`, (err) => {
+          if (err) throw err
+          console.log('削除しました')
           })
         })
     })
