@@ -38,18 +38,19 @@ class MemoApp {
   refer () {
     fs.readdir('.', (err,allFiles) => {
       if (err) throw err
-      const text = this.#filterFirstLine(allFiles)
+      const [files, text] = this.#filterFirstLine(allFiles)
       inquirer.prompt([
         {
-           message: 'ファイル詳細',
-           type: 'list',
-           name: 'title',
-           choices: text
-         }
+          message: 'ファイル詳細',
+          type: 'list',
+          name: 'title',
+          choices: text
+        }
       ])
       .then(answer => {
-        const text = fs.readFileSync(`${answer.title}.txt`, 'utf8')
-        console.log(text)
+        const num = text.indexOf(answer.title)
+        const content = fs.readFileSync(files[num], 'utf8')
+        console.log(content)
         })
       })
     }
@@ -57,18 +58,19 @@ class MemoApp {
   delete () {
     fs.readdir('.', (err,allFiles) => {
       if (err) throw err
-      const text = this.#filterFirstLine(allFiles)
+      const [files, text] = this.#filterFirstLine(allFiles)
       inquirer.prompt([
         {
           message: 'ファイル削除',
           type: 'list',
+          name: 'title',
           choices: text
         }
       ])
       .then(answer => {
-        fs.unlink(`${answer.title}.txt`, (err) => {
+        const num = text.indexOf(answer.title)
+        fs.unlink(files[num], (err) => {
           if (err) throw err
-          console.log('削除しました')
         })
       })
     })
@@ -88,7 +90,7 @@ class MemoApp {
       const lines = text.split(/\r\n|\n/)
       texts.push(lines[0])
     })
-    return texts
+    return [files,texts]
   }
 }
 
