@@ -3,7 +3,6 @@ const fs = require('fs')
 const inquirer = require('inquirer')
 
 class MemoApp {
-
   contructor () {
     this.content = content
   }
@@ -30,7 +29,7 @@ class MemoApp {
   list () {
     fs.readdir('.', function (err, allFiles) {
       if (err) throw err
-      const files = this.#filetypeConvert(allFiles)
+      const files = this.#filterFile(allFiles)
       files.forEach(function (file) {
         const text = fs.readFileSync(file, 'utf8')
         const lines = text.split(/\r\n|\n/)
@@ -78,14 +77,14 @@ class MemoApp {
     })
   }
 
-  #filetypeConvert (allfiles) {
+  #filterFile (allfiles) {
     return allfiles.filter(function (file) {
       return fs.statSync(file).isFile() && file.endsWith('.txt')
     })
   }
 
   #linesConvert (allFiles) {
-    const files = this.#filetypeConvert(allFiles)
+    const files = this.#filterFile(allFiles)
     const text = []
     files.forEach(function (file) {
       const texts = fs.readFileSync(file, 'utf8')
