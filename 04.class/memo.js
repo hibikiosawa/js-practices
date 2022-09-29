@@ -3,10 +3,6 @@ const fs = require('fs')
 const inquirer = require('inquirer')
 
 class MemoApp {
-  contructor () {
-    this.content = content
-  }
-
   input () {
     process.stdin.resume()
     process.stdin.setEncoding('utf8')
@@ -17,7 +13,7 @@ class MemoApp {
     })
 
     process.stdin.on('end', () => {
-      const today = new Date
+      const today = new Date()
 
       fs.writeFile(`${today}.txt`, inputString, (err) => {
         if (err) console.log(err)
@@ -36,7 +32,7 @@ class MemoApp {
   }
 
   refer () {
-    fs.readdir('.', (err,allFiles) => {
+    fs.readdir('.', (err, allFiles) => {
       if (err) throw err
       const [files, text] = this.#filterFirstLine(allFiles)
       inquirer.prompt([
@@ -47,16 +43,16 @@ class MemoApp {
           choices: text
         }
       ])
-      .then(answer => {
-        const num = text.indexOf(answer.title)
-        const content = fs.readFileSync(files[num], 'utf8')
-        console.log(content)
+        .then(answer => {
+          const num = text.indexOf(answer.title)
+          const content = fs.readFileSync(files[num], 'utf8')
+          console.log(content)
         })
-      })
-    }
+    })
+  }
 
   delete () {
-    fs.readdir('.', (err,allFiles) => {
+    fs.readdir('.', (err, allFiles) => {
       if (err) throw err
       const [files, text] = this.#filterFirstLine(allFiles)
       inquirer.prompt([
@@ -67,12 +63,12 @@ class MemoApp {
           choices: text
         }
       ])
-      .then(answer => {
-        const num = text.indexOf(answer.title)
-        fs.unlink(files[num], (err) => {
-          if (err) throw err
+        .then(answer => {
+          const num = text.indexOf(answer.title)
+          fs.unlink(files[num], (err) => {
+            if (err) throw err
+          })
         })
-      })
     })
   }
 
@@ -90,7 +86,7 @@ class MemoApp {
       const lines = text.split(/\r\n|\n/)
       texts.push(lines[0])
     })
-    return [files,texts]
+    return [files, texts]
   }
 }
 
