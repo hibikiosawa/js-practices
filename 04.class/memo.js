@@ -12,11 +12,11 @@ class MemoApp {
     process.stdin.setEncoding('utf8')
     let inputString = ''
 
-    process.stdin.on('data', function (chunk) {
+    process.stdin.on('data', (chunk) => {
       inputString += chunk
     })
 
-    process.stdin.on('end', function () {
+    process.stdin.on('end', () => {
       const today = new Date
 
       fs.writeFile(`${today}.txt`, inputString, (err) => {
@@ -27,7 +27,7 @@ class MemoApp {
   }
 
   list () {
-    fs.readdir('.', function (err, allFiles) {
+    fs.readdir('.', (err, allFiles) => {
       const text = memoApp.#linesConvert(allFiles)
       text.forEach((element) => {
         console.log(element)
@@ -36,14 +36,14 @@ class MemoApp {
   }
 
   refer () {
-    fs.readdir('.', function (err,allFiles) {
+    fs.readdir('.', (err,allFiles) => {
       if (err) throw err
       const text = memoApp.#linesConvert(allFiles)
       inquirer.prompt([
         {
           message: 'ファイル詳細',
           type: 'list',
-          name: 'refer',
+          name: 'title',
           choices: text
         }
       ])
@@ -55,14 +55,14 @@ class MemoApp {
     }
 
   delete () {
-    fs.readdir('.', function (err,allFiles) {
+    fs.readdir('.', (err,allFiles) => {
       if (err) throw err
       const text = memoApp.#linesConvert(allFiles)
       inquirer.prompt([
         {
           message: 'ファイル削除',
           type: 'list',
-          name: 'delete',
+          name: 'title',
           choices: text
         }
       ])
@@ -76,7 +76,7 @@ class MemoApp {
   }
 
   #filterFile (allfiles) {
-    return allfiles.filter(function (file) {
+    return allfiles.filter((file) => {
       return fs.statSync(file).isFile() && file.endsWith('.txt')
     })
   }
@@ -84,7 +84,7 @@ class MemoApp {
   #linesConvert (allFiles) {
     const files = this.#filterFile(allFiles)
     const texts = []
-    files.forEach(function (file) {
+    files.forEach((file) => {
       const text = fs.readFileSync(file, 'utf8')
       const lines = text.split(/\r\n|\n/)
       texts.push(lines[0])
