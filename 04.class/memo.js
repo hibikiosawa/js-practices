@@ -50,9 +50,9 @@ class MemoApp {
           choices: text
         }
       ])
-        .then(answer => {
-          const text = fs.readFileSync(`${answer.title}.txt`, 'utf8')
-          console.log(text)
+      .then(answer => {
+        const text = fs.readFileSync(`${answer.title}.txt`, 'utf8')
+        console.log(text)
         })
       })
     }
