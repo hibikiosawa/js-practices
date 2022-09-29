@@ -46,7 +46,7 @@ class MemoApp {
         {
           message: 'ファイル詳細',
           type: 'list',
-          name: 'title',
+          name: 'refer',
           choices: text
         }
       ])
@@ -63,8 +63,9 @@ class MemoApp {
       const text = memoApp.#linesConvert(allFiles)
       inquirer.prompt([
         {
+          message: 'ファイル削除',
           type: 'list',
-          name: 'ファイル削除',
+          name: 'delete',
           choices: text
         }
       ])
