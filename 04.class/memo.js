@@ -38,7 +38,7 @@ class MemoApp {
     })
   }
 
-  reference () {
+  refer () {
     fs.readdir('.', function (err,allFiles) {
       if (err) throw err
       const text = this.#linesConvert(allFiles)
