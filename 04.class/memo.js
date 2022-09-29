@@ -28,12 +28,9 @@ class MemoApp {
 
   list () {
     fs.readdir('.', function (err, allFiles) {
-      if (err) throw err
-      const files = memoApp.#filterFile(allFiles)
-      files.forEach(function (file) {
-        const text = fs.readFileSync(file, 'utf8')
-        const lines = text.split(/\r\n|\n/)
-        console.log(lines[0])
+      const text = memoApp.#linesConvert(allFiles)
+      text.forEach((element) => {
+        console.log(element)
       })
     })
   }
