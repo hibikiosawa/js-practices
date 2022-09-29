@@ -28,7 +28,7 @@ class MemoApp {
 
   list () {
     fs.readdir('.', (err, allFiles) => {
-      const text = memoApp.#linesConvert(allFiles)
+      const text = this.#filterFirstLine(allFiles)
       text.forEach((element) => {
         console.log(element)
       })
@@ -38,14 +38,14 @@ class MemoApp {
   refer () {
     fs.readdir('.', (err,allFiles) => {
       if (err) throw err
-      const text = memoApp.#linesConvert(allFiles)
+      const text = this.#filterFirstLine(allFiles)
       inquirer.prompt([
         {
-          message: 'ファイル詳細',
-          type: 'list',
-          name: 'title',
-          choices: text
-        }
+           message: 'ファイル詳細',
+           type: 'list',
+           name: 'title',
+           choices: text
+         }
       ])
       .then(answer => {
         const text = fs.readFileSync(`${answer.title}.txt`, 'utf8')
@@ -57,12 +57,11 @@ class MemoApp {
   delete () {
     fs.readdir('.', (err,allFiles) => {
       if (err) throw err
-      const text = memoApp.#linesConvert(allFiles)
+      const text = this.#filterFirstLine(allFiles)
       inquirer.prompt([
         {
           message: 'ファイル削除',
           type: 'list',
-          name: 'title',
           choices: text
         }
       ])
@@ -81,7 +80,7 @@ class MemoApp {
     })
   }
 
-  #linesConvert (allFiles) {
+  #filterFirstLine (allFiles) {
     const files = this.#filterFile(allFiles)
     const texts = []
     files.forEach((file) => {
