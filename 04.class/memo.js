@@ -29,7 +29,7 @@ class MemoApp {
   list () {
     fs.readdir('.', function (err, allFiles) {
       if (err) throw err
-      const files = this.#filterFile(allFiles)
+      const files = memoApp.#filterFile(allFiles)
       files.forEach(function (file) {
         const text = fs.readFileSync(file, 'utf8')
         const lines = text.split(/\r\n|\n/)
@@ -41,7 +41,7 @@ class MemoApp {
   refer () {
     fs.readdir('.', function (err,allFiles) {
       if (err) throw err
-      const text = this.#linesConvert(allFiles)
+      const text = memoApp.#linesConvert(allFiles)
       inquirer.prompt([
         {
           message: 'ファイル詳細',
@@ -60,7 +60,7 @@ class MemoApp {
   delete () {
     fs.readdir('.', function (err,allFiles) {
       if (err) throw err
-      const text = this.#linesConvert(allFiles)
+      const text = memoApp.#linesConvert(allFiles)
       inquirer.prompt([
         {
           type: 'list',
@@ -85,13 +85,13 @@ class MemoApp {
 
   #linesConvert (allFiles) {
     const files = this.#filterFile(allFiles)
-    const text = []
+    const texts = []
     files.forEach(function (file) {
-      const texts = fs.readFileSync(file, 'utf8')
-      const lines = texts.split(/\r\n|\n/)
-      text.push(lines[0])
+      const text = fs.readFileSync(file, 'utf8')
+      const lines = text.split(/\r\n|\n/)
+      texts.push(lines[0])
     })
-    return text
+    return texts
   }
 }
 
@@ -100,7 +100,7 @@ const memoApp = new MemoApp()
 if (argv.l) {
   memoApp.list()
 } else if (argv.r) {
-  memoApp.reference()
+  memoApp.refer()
 } else if (argv.d) {
   memoApp.delete()
 } else {
