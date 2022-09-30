@@ -42,7 +42,7 @@ class MemoApp {
           message: 'ファイル詳細',
           type: 'list',
           name: 'title',
-          choices: choices
+          choices
         }
       ])
         .then(answer => {
@@ -63,11 +63,11 @@ class MemoApp {
           message: 'ファイル削除',
           type: 'list',
           name: 'title',
-          choices: choices
+          choices
         }
       ])
         .then(answer => {
-          const num = text.indexOf(answer.title)
+          const num = choices.indexOf(answer.title)
           fs.unlink(files[num], (err) => {
             if (err) throw err
           })
@@ -75,8 +75,8 @@ class MemoApp {
     })
   }
 
-  #selectTextFiles (allfiles) {
-    return allfiles.filter((file) => {
+  #selectTextFiles (files) {
+    return files.filter((file) => {
       return fs.statSync(file).isFile() && file.endsWith('.txt')
     })
   }
