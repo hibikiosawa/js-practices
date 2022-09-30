@@ -13,9 +13,11 @@ class MemoApp {
     })
 
     process.stdin.on('end', () => {
-      const today = new Date()
+      const date = new Date()
+      const a = date.getTime()
+      const unixTime = Math.floor(a / 1000)
 
-      fs.writeFile(`${today}.txt`, inputString, (err) => {
+      fs.writeFile(`${unixTime}.txt`, inputString, (err) => {
         if (err) console.log(err)
         else console.log('保存しました')
       })
