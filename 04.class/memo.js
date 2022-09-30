@@ -24,7 +24,8 @@ class MemoApp {
 
   list () {
     fs.readdir('.', (err, allFiles) => {
-      const text = this.#collectFirstLines(allFiles)
+      const files = this.#selectTextFiles(allFiles)
+      const text = this.#collectFirstLines(files)
       text.forEach((element) => {
         console.log(element)
       })
@@ -34,7 +35,8 @@ class MemoApp {
   refer () {
     fs.readdir('.', (err, allFiles) => {
       if (err) throw err
-      const [files, text] = this.#collectFirstLines(allFiles)
+      const files = this.#selectTextFiles(allFiles)
+      const text = this.#collectFirstLines(files)
       inquirer.prompt([
         {
           message: 'ファイル詳細',
@@ -54,7 +56,8 @@ class MemoApp {
   delete () {
     fs.readdir('.', (err, allFiles) => {
       if (err) throw err
-      const [files, text] = this.#collectFirstLines(allFiles)
+      const files = this.#selectTextFiles(allFiles)
+      const text = this.#collectFirstLines(files)
       inquirer.prompt([
         {
           message: 'ファイル削除',
@@ -78,15 +81,14 @@ class MemoApp {
     })
   }
 
-  #collectFirstLines (allFiles) {
-    const files = this.#selectTextFiles(allFiles)
+  #collectFirstLines (files) {
     const texts = []
     files.forEach((file) => {
       const text = fs.readFileSync(file, 'utf8')
       const lines = text.split(/\r\n|\n/)
       texts.push(lines[0])
     })
-    return [files, texts]
+    return texts
   }
 }
 
