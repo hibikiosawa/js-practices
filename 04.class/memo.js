@@ -26,8 +26,8 @@ class MemoApp {
   list () {
     fs.readdir('.', (err, allFiles) => {
       const files = this.#selectTextFiles(allFiles)
-      const choices = this.#collectFirstLines(files)
-      choices.forEach((element) => {
+      const texts = this.#collectFirstLines(files)
+      texts.forEach((element) => {
         console.log(element)
       })
     })
