@@ -83,13 +83,11 @@ class MemoApp {
   }
 
   #collectFirstLines (files) {
-    const texts = []
-    files.forEach((file) => {
-      const choices = fs.readFileSync(file, 'utf8')
-      const lines = choices.split(/\r\n|\n/)
-      texts.push(lines[0])
+    return files.map((file) => {
+      const text = fs.readFileSync(file, 'utf8')
+      const lines = text.split(/\r\n|\n/)
+      return lines[0]
     })
-    return texts
   }
 }
 
