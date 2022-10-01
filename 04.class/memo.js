@@ -14,8 +14,7 @@ class MemoApp {
 
     process.stdin.on('end', () => {
       const date = new Date()
-      const a = date.getTime()
-      const unixTime = Math.floor(a / 1000)
+      const unixTime = date.getTime()
 
       fs.writeFile(`${unixTime}.txt`, inputString, (err) => {
         if (err) console.log(err)
